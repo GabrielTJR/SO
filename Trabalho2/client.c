@@ -22,13 +22,13 @@ void request_number() {
     // Lê o conteúdo do pipe
     ssize_t bytesRead = read(fd, buffer, BUFFER_SIZE);
     if (bytesRead > 0) {
-        buffer[bytesRead] = '\0';  // Garante que o buffer está null-terminated
+        buffer[bytesRead] = '\0';
         printf("Resposta do servidor: %s\n", buffer);
     } else {
         printf("Nenhuma resposta recebida do servidor.\n");
     }
 
-    close(fd);  // Fecha o pipe
+    close(fd);
 }
 
 void request_string() {
@@ -45,19 +45,19 @@ void request_string() {
     // Lê o conteúdo do pipe
     ssize_t bytesRead = read(fd, buffer, BUFFER_SIZE);
     if (bytesRead > 0) {
-        buffer[bytesRead] = '\0';  // Garante que o buffer está null-terminated
+        buffer[bytesRead] = '\0';
         printf("Resposta do servidor: %s\n", buffer);
     } else {
         printf("Nenhuma resposta recebida do servidor.\n");
     }
 
-    close(fd);  // Fecha o pipe
+    close(fd);
 }
 
 int main() {
     int op;
 
-    while (1) {  // Loop para manter o cliente em execução
+    while (1) {
         printf("Escolha uma opção:\n");
         printf("1. Solicitar número\n");
         printf("2. Solicitar string\n");

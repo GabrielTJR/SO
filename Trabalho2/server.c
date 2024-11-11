@@ -5,7 +5,7 @@
 #include <string.h>
 #include <fcntl.h>
 
-#define NUM_THREADS 4  // Aumentado para 4 threads
+#define NUM_THREADS 4
 #define PIPE_NUMBERS "pipe_numbers"
 #define PIPE_STRINGS "pipe_strings"
 #define BUFFER_SIZE 256
@@ -20,13 +20,13 @@ void* handle_numbers(void* arg) {
         fd = open(PIPE_NUMBERS, O_WRONLY);
         if (fd < 0) {
             perror("Erro ao abrir pipe de números");
-            sleep(1);  // Espera antes de tentar novamente
+            sleep(1);
             continue;
         }
         sprintf(buffer, "Número: %d", number);
         write(fd, buffer, strlen(buffer) + 1);
-        close(fd);  // Fecha o pipe
-        sleep(2);   // Simula tempo de processamento
+        close(fd);
+        sleep(2);
     }
     return NULL;
 }
@@ -41,13 +41,13 @@ void* handle_strings(void* arg) {
         fd = open(PIPE_STRINGS, O_WRONLY);
         if (fd < 0) {
             perror("Erro ao abrir pipe de strings");
-            sleep(1);  // Espera antes de tentar novamente
+            sleep(1);
             continue;
         }
         sprintf(buffer, "Mensagem: %s", response);
         write(fd, buffer, strlen(buffer) + 1);
         close(fd);
-        sleep(2);  // Simula tempo de processamento
+        sleep(2);
     }
     return NULL;
 }
@@ -55,7 +55,6 @@ void* handle_strings(void* arg) {
 int main() {
     pthread_t threads[NUM_THREADS];
 
-    // Cria os pipes nomeados uma única vez no início do programa
     if (mkfifo(PIPE_NUMBERS, 0666) == -1) {
         perror("Erro ao criar pipe de números");
         exit(1);
@@ -65,13 +64,11 @@ int main() {
         exit(1);
     }
 
-    // Cria duas threads para números e duas para strings
     pthread_create(&threads[0], NULL, handle_numbers, NULL);
     pthread_create(&threads[1], NULL, handle_numbers, NULL);
     pthread_create(&threads[2], NULL, handle_strings, NULL);
     pthread_create(&threads[3], NULL, handle_strings, NULL);
 
-    // Aguarda o término das threads (no caso, elas não terminam devido ao loop infinito)
     for (int i = 0; i < NUM_THREADS; i++) {
         pthread_join(threads[i], NULL);
     }
